@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.widget.ImageView;
 
 public class CampoMinado extends Activity implements OnClickListener {
 
@@ -15,6 +16,9 @@ public class CampoMinado extends Activity implements OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_campo_minado);
+
+        ImageView icon = (ImageView) findViewById(R.id.icon_imageView);
+        icon.setBackgroundResource(R.drawable.minesweeper);
 
         View newGameButton = findViewById(R.id.new_game_button);
         newGameButton.setOnClickListener(this);

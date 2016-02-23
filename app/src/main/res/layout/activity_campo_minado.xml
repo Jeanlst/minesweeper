@@ -4,7 +4,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="30dip">
+    android:padding="20dip">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Campo Minado"
+        android:gravity="center"
+        android:paddingBottom="10dp"
+        android:textSize="40dp"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/icon_imageView"
+        android:layout_gravity="center_horizontal" />
 
     <Button android:id="@+id/new_game_button"
         android:layout_width="match_parent"
