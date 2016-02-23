@@ -31,6 +31,10 @@
         <activity android:name=".Game"
             android:label="@string/title_activity_campominado">
         </activity>
+        <actvity android:name=".Score"
+            android:label="Scores"
+            android:theme="@android:style/Theme.Dialog">
+        </actvity>
     </application>
 
 </manifest>
