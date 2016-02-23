@@ -14,10 +14,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/continue_game" /> -->
-    <Button android:id="@+id/high_scores_button"
+    <Button android:id="@+id/rank_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/high_scores" />
+        android:text="Rank" />
     <Button android:id="@+id/rules_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

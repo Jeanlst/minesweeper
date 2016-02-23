@@ -22,7 +22,7 @@ public class CampoMinado extends Activity implements OnClickListener {
         /*View continueButton = findViewById(R.id.continue_game_button);
         continueButton.setOnClickListener(this);*/
 
-        View highscoresButton = findViewById(R.id.high_scores_button);
+        View highscoresButton = findViewById(R.id.rank_button);
         highscoresButton.setOnClickListener(this);
 
         View rulesButton = findViewById(R.id.rules_button);
@@ -45,9 +45,11 @@ public class CampoMinado extends Activity implements OnClickListener {
                 openNewGameDialog();
                 break;
             /*case R.id.continue_game_button:
-                break;
-            case R.id.high_scores_button:
                 break;*/
+            case R.id.rank_button:
+                Intent i1 = new Intent(this, Rank.class);
+                startActivity(i1);
+                break;
             case R.id.rules_button:
                 Intent i = new Intent(this, Rules.class);
                 startActivity(i);

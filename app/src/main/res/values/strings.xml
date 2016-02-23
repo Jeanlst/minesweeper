@@ -16,7 +16,7 @@
     <string name="timer">0</string>
     <string name="smiley">Smile</string>
     <string name="score">Score</string>
-    <string name="score_content">Score</string>
+    <string name="score_name_content">Name</string>
 
 
 </resources>

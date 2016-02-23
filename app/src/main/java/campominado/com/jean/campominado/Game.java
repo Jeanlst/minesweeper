@@ -1,6 +1,8 @@
 package campominado.com.jean.campominado;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -10,6 +12,10 @@ import android.widget.TableRow.LayoutParams;
 import java.util.Random;
 import android.os.Handler;
 import android.widget.TextView;
+
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 /**
  * Created by Jean on 21/02/2016.
@@ -54,11 +60,17 @@ public class Game extends Activity {
     public int flagsCount;
     public int correctFlags;
     public int totalCoveredTiles;
+    public int clicks;
 
     public ImageButton imageButton;
 
     public int tileWH;
     public int tilePadding;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,18 +86,26 @@ public class Game extends Activity {
         mineField = (TableLayout) findViewById(R.id.MineField);
         tilePadding = 25;
         tileWH = 3;
+        clicks = 0;
         imageButton = (ImageButton) findViewById(R.id.Smiley);
         imageButton.setBackgroundResource(R.drawable.smile);
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                restartGame();
+//                restartGame();
+                Intent intent = new Intent(Game.this, Score.class);
+                intent.putExtra(Score.KEY_SCORE , "" + clicks);
+                startActivity(intent);
             }
         });
 
         createGameBoard(diff);
         setupMineField(totalRows, totalCols);
         showGameBoard();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     public void createGameBoard(int diff) {
@@ -93,7 +113,7 @@ public class Game extends Activity {
         totalRows = easyRows;
         totalCols = easyColumns;
         totalMines = easyMines;
-        switch(diff) {
+        switch (diff) {
             case DIFFICULTY_EASY:
                 break;
             case DIFFICULTY_MEDIUM:
@@ -113,11 +133,11 @@ public class Game extends Activity {
         minesCount = totalMines;
         flagsCount = 0;
         correctFlags = 0;
-        totalCoveredTiles = totalRows*totalCols;
+        totalCoveredTiles = totalRows * totalCols;
         setMinesText();
 
-        for(int row = 0; row < totalRows;row++) {
-            for(int col = 0; col < totalCols;col++) {
+        for (int row = 0; row < totalRows; row++) {
+            for (int col = 0; col < totalCols; col++) {
                 //cria um tile
                 tiles[row][col] = new Tile(this);
                 //seta o padrao do tile
@@ -130,6 +150,7 @@ public class Game extends Activity {
                 tiles[row][col].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        clicks++;
                         if (!timerStarted) {
                             startTimer();
                             timerStarted = true;
@@ -143,7 +164,7 @@ public class Game extends Activity {
                                 tiles[curRow][curCol].openTile();
                                 loseGame();
                             } else
-                                uncoverTiles(curRow,curCol);
+                                uncoverTiles(curRow, curCol);
 
                             if (checkWonGame())
                                 winGame();
@@ -155,6 +176,7 @@ public class Game extends Activity {
                 tiles[row][col].setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View view) {
+                        clicks++;
                         if (!timerStarted) {
                             startTimer();
                             timerStarted = true;
@@ -206,46 +228,41 @@ public class Game extends Activity {
         Random random = new Random();
         int mineRow;
         int mineCol;
-        for(int i = 0; i < totalMines; i++) {
+        for (int i = 0; i < totalMines; i++) {
             mineRow = random.nextInt(totalRows);
             mineCol = random.nextInt(totalCols);
 
-            if(mineRow == row && mineCol == col) { //tile clicado
+            if (mineRow == row && mineCol == col) { //tile clicado
                 i--;
-            }
-            else if(tiles[mineRow][mineCol].isMine()) { //ja eh uma mina
+            } else if (tiles[mineRow][mineCol].isMine()) { //ja eh uma mina
                 i--;
-            }
-            else {
+            } else {
                 //planta uma nova mina
                 tiles[mineRow][mineCol].plantMine();
                 // uma linha e coluna para tras
-                int startRow = mineRow-1;
-                int startCol = mineCol-1;
+                int startRow = mineRow - 1;
+                int startCol = mineCol - 1;
                 //checa 3 para tras e 3 para frente
                 int checkRows = 3;
                 int checkCols = 3;
-                if(startRow < 0) //se estiver na primeira linha
+                if (startRow < 0) //se estiver na primeira linha
                 {
                     startRow = 0;
                     checkRows = 2;
-                }
-                else if(startRow+3 > totalRows) //se estiver na ultima linha
+                } else if (startRow + 3 > totalRows) //se estiver na ultima linha
                     checkRows = 2;
 
-                if(startCol < 0)
-                {
+                if (startCol < 0) {
                     startCol = 0;
                     checkCols = 2;
-                }
-                else if(startCol+3 > totalCols) //se estivar na ultima coluna
+                } else if (startCol + 3 > totalCols) //se estivar na ultima coluna
                     checkCols = 2;
 
-                for(int j=startRow;j<startRow+checkRows;j++) //3 linhas para frente
+                for (int j = startRow; j < startRow + checkRows; j++) //3 linhas para frente
                 {
-                    for(int k=startCol;k<startCol+checkCols;k++) //3 linhas para baixo
+                    for (int k = startCol; k < startCol + checkCols; k++) //3 linhas para baixo
                     {
-                        if(!tiles[j][k].isMine()) //se nao for uma mina
+                        if (!tiles[j][k].isMine()) //se nao for uma mina
                             tiles[j][k].updateSurroundingMineCount();
                     }
                 }
@@ -255,28 +272,28 @@ public class Game extends Activity {
 
     public void showGameBoard() {
         //para cada linha
-        for(int row=0;row<totalRows;row++) {
+        for (int row = 0; row < totalRows; row++) {
             //cria uma nova table row
             TableRow tableRow = new TableRow(this);
             //seta a largura e altura da tablerow
             tableRow.setLayoutParams(new LayoutParams((tileWH * tilePadding) * totalCols, tileWH * tilePadding));
 
             //para cada coluna
-            for(int col=0;col<totalCols;col++) {
+            for (int col = 0; col < totalCols; col++) {
                 //seta a altura e largura do tile
-                tiles[row][col].setLayoutParams(new LayoutParams(tileWH * tilePadding,  tileWH * tilePadding));
+                tiles[row][col].setLayoutParams(new LayoutParams(tileWH * tilePadding, tileWH * tilePadding));
                 //adiciona o espacamento do tile
                 tiles[row][col].setPadding(tilePadding, tilePadding, tilePadding, tilePadding);
                 //adiciona o tile ao table row
                 tableRow.addView(tiles[row][col]);
             }
             //adiciona a linha para o layoute do campo minado
-            mineField.addView(tableRow,new TableLayout.LayoutParams((tileWH * tilePadding) * totalCols, tileWH * tilePadding));
+            mineField.addView(tableRow, new TableLayout.LayoutParams((tileWH * tilePadding) * totalCols, tileWH * tilePadding));
         }
     }
 
     public void startTimer() {
-        if(secondsPassed == 0) {
+        if (secondsPassed == 0) {
             timer.removeCallbacks(updateTimer);
             timer.postDelayed(updateTimer, 1000);
             secondsPassed = 1;
@@ -291,30 +308,24 @@ public class Game extends Activity {
     public void setMinesText() {
         if (minesCount < 10) {
             minesText.setText("00" + minesCount);
-        }
-        else if (minesCount < 100) {
+        } else if (minesCount < 100) {
             minesText.setText("0" + minesCount);
-        }
-        else {
+        } else {
             minesText.setText(minesCount);
         }
     }
 
-    private Runnable updateTimer = new Runnable()
-    {
-        public void run()
-        {
+    private Runnable updateTimer = new Runnable() {
+        public void run() {
             long currentMilliseconds = System.currentTimeMillis();
             ++secondsPassed;
             String curTime = Integer.toString(secondsPassed);
             //atualize o texto da view
             if (secondsPassed < 10) {
                 timerText.setText("00" + curTime);
-            }
-            else if (secondsPassed < 100) {
+            } else if (secondsPassed < 100) {
                 timerText.setText("0" + curTime);
-            }
-            else {
+            } else {
                 timerText.setText(curTime);
             }
             timer.postAtTime(this, currentMilliseconds);
@@ -345,40 +356,37 @@ public class Game extends Activity {
 
     private void uncoverTiles(int row, int col) {
         //se o tile for uma mina ou uma bandeira retorne
-        if(tiles[row][col].isMine() || tiles[row][col].isFlag())
+        if (tiles[row][col].isMine() || tiles[row][col].isFlag())
             return;
 
         tiles[row][col].openTile();
         if (!tiles[row][col].isMine())
             totalCoveredTiles--;
 
-        if(tiles[row][col].getNoSurroundingMines() > 0)
+        if (tiles[row][col].getNoSurroundingMines() > 0)
             return;
 
 
-        int startRow = row-1;
-        int startCol = col-1;
+        int startRow = row - 1;
+        int startCol = col - 1;
         int checkRows = 3;
         int checkCols = 3;
-        if(startRow < 0) {
+        if (startRow < 0) {
             startRow = 0;
             checkRows = 2;
-        }
-        else if(startRow+3 > totalRows)
+        } else if (startRow + 3 > totalRows)
             checkRows = 2;
 
-        if(startCol < 0) {
+        if (startCol < 0) {
             startCol = 0;
             checkCols = 2;
-        }
-        else if(startCol+3 > totalCols)
+        } else if (startCol + 3 > totalCols)
             checkCols = 2;
 
-        for(int i=startRow;i<startRow+checkRows;i++) {
-            for(int j=startCol;j<startCol+checkCols;j++)
-            {
-                if(tiles[i][j].isCovered())
-                    uncoverTiles(i,j);
+        for (int i = startRow; i < startRow + checkRows; i++) {
+            for (int j = startCol; j < startCol + checkCols; j++) {
+                if (tiles[i][j].isCovered())
+                    uncoverTiles(i, j);
             }
         }
     }
@@ -386,16 +394,16 @@ public class Game extends Activity {
     private void endGame() {
         stopTimer();
 
-        for(int i=0;i<totalRows;i++) {
-            for(int j=0;j<totalCols;j++) {
+        for (int i = 0; i < totalRows; i++) {
+            for (int j = 0; j < totalCols; j++) {
                 //se o tile estiver coberto
-                if(tiles[i][j].isCovered()) {
+                if (tiles[i][j].isCovered()) {
                     //se tiver nenhuma bandeira ou mina
-                    if(!tiles[i][j].isFlag() && !tiles[i][j].isMine()) {
+                    if (!tiles[i][j].isFlag() && !tiles[i][j].isMine()) {
                         tiles[i][j].openTile();
                     }
                     //se tiver uma mina mas nao tiver bandeira
-                    else if(tiles[i][j].isMine() && !tiles[i][j].isFlag()) {
+                    else if (tiles[i][j].isMine() && !tiles[i][j].isFlag()) {
                         tiles[i][j].openTile();
                     }
                 }
@@ -421,4 +429,43 @@ public class Game extends Activity {
 
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Game Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app deep link URI is correct.
+                Uri.parse("android-app://campominado.com.jean.campominado/http/host/path")
+        );
+        AppIndex.AppIndexApi.start(client, viewAction);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Game Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app deep link URI is correct.
+                Uri.parse("android-app://campominado.com.jean.campominado/http/host/path")
+        );
+        AppIndex.AppIndexApi.end(client, viewAction);
+        client.disconnect();
+    }
 }
