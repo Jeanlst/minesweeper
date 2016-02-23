@@ -18,14 +18,6 @@
         android:id="@+id/rank_listview_header"
         android:textColor="@color/colorPrimary"/>
 
-    <Button
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:text="+"
-        android:textSize="24dp"
-        android:id="@+id/rank_novaButton"
-        android:layout_alignParentRight="true"/>
-
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
