@@ -1,2 +1,2 @@
 # minesweeper
-Meu Campo Minado para o Eriko
+Nosso Campo Minado para o Eriko
