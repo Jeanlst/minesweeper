@@ -13,11 +13,11 @@
     <!--<Button android:id="@+id/continue_game_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/continue_game" />
+        android:text="@string/continue_game" /> -->
     <Button android:id="@+id/high_scores_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/high_scores" /> -->
+        android:text="@string/high_scores" />
     <Button android:id="@+id/rules_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

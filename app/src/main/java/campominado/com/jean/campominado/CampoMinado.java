@@ -22,8 +22,8 @@ public class CampoMinado extends Activity implements OnClickListener {
         /*View continueButton = findViewById(R.id.continue_game_button);
         continueButton.setOnClickListener(this);*/
 
-        /*View highscoresButton = findViewById(R.id.high_scores_button);
-        highscoresButton.setOnClickListener(this);*/
+        View highscoresButton = findViewById(R.id.high_scores_button);
+        highscoresButton.setOnClickListener(this);
 
         View rulesButton = findViewById(R.id.rules_button);
         rulesButton.setOnClickListener(this);
