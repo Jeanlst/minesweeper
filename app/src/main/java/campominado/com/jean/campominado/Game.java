@@ -63,11 +63,12 @@ public class Game extends Activity {
 
     public ImageButton imageButton;
 
-    public int tileWH = 44;
-    public int tilePadding = 2;
+    public int tileWH = 60;
+    public int tilePadding = 5;
 
     public int mineFieldldWidth;
     public int mineFieldHeight;
+
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -94,10 +95,8 @@ public class Game extends Activity {
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                restartGame();
-                Intent intent = new Intent(Game.this, Score.class);
-                intent.putExtra(Score.KEY_SCORE , "" + secondsPassed);
-                startActivity(intent);
+                restartGame();
+
             }
         });
 
@@ -341,6 +340,10 @@ public class Game extends Activity {
         imageButton.setBackgroundResource(R.drawable.smile);
 
         endGame();
+
+        Intent intent = new Intent(Game.this, Score.class);
+        intent.putExtra(Score.KEY_SCORE , "" + secondsPassed);
+        startActivity(intent);
 
     }
 
