@@ -60,7 +60,6 @@ public class Game extends Activity {
     public int flagsCount;
     public int correctFlags;
     public int totalCoveredTiles;
-    public int clicks;
 
     public ImageButton imageButton;
 
@@ -86,7 +85,6 @@ public class Game extends Activity {
         mineField = (TableLayout) findViewById(R.id.MineField);
         tilePadding = 25;
         tileWH = 3;
-        clicks = 0;
         imageButton = (ImageButton) findViewById(R.id.Smiley);
         imageButton.setBackgroundResource(R.drawable.smile);
         imageButton.setOnClickListener(new View.OnClickListener() {
@@ -94,7 +92,7 @@ public class Game extends Activity {
             public void onClick(View v) {
 //                restartGame();
                 Intent intent = new Intent(Game.this, Score.class);
-                intent.putExtra(Score.KEY_SCORE , "" + clicks);
+                intent.putExtra(Score.KEY_SCORE , "" + secondsPassed);
                 startActivity(intent);
             }
         });
@@ -150,7 +148,6 @@ public class Game extends Activity {
                 tiles[row][col].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        clicks++;
                         if (!timerStarted) {
                             startTimer();
                             timerStarted = true;
@@ -176,7 +173,6 @@ public class Game extends Activity {
                 tiles[row][col].setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View view) {
-                        clicks++;
                         if (!timerStarted) {
                             startTimer();
                             timerStarted = true;
