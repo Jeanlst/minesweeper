@@ -63,8 +63,11 @@ public class Game extends Activity {
 
     public ImageButton imageButton;
 
-    public int tileWH;
-    public int tilePadding;
+    public int tileWH = 44;
+    public int tilePadding = 2;
+
+    public int mineFieldldWidth;
+    public int mineFieldHeight;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -83,8 +86,9 @@ public class Game extends Activity {
         timerText = (TextView) findViewById(R.id.Timer);
         minesText = (TextView) findViewById(R.id.MineCount);
         mineField = (TableLayout) findViewById(R.id.MineField);
-        tilePadding = 25;
-        tileWH = 3;
+        mineFieldHeight = mineField.getHeight();
+        mineFieldldWidth = mineField.getWidth();
+
         imageButton = (ImageButton) findViewById(R.id.Smiley);
         imageButton.setBackgroundResource(R.drawable.smile);
         imageButton.setOnClickListener(new View.OnClickListener() {
@@ -241,8 +245,7 @@ public class Game extends Activity {
                 //checa 3 para tras e 3 para frente
                 int checkRows = 3;
                 int checkCols = 3;
-                if (startRow < 0) //se estiver na primeira linha
-                {
+                if (startRow < 0) { //se estiver na primeira linha
                     startRow = 0;
                     checkRows = 2;
                 } else if (startRow + 3 > totalRows) //se estiver na ultima linha
@@ -254,10 +257,8 @@ public class Game extends Activity {
                 } else if (startCol + 3 > totalCols) //se estivar na ultima coluna
                     checkCols = 2;
 
-                for (int j = startRow; j < startRow + checkRows; j++) //3 linhas para frente
-                {
-                    for (int k = startCol; k < startCol + checkCols; k++) //3 linhas para baixo
-                    {
+                for (int j = startRow; j < startRow + checkRows; j++) {//3 linhas para frente
+                    for (int k = startCol; k < startCol + checkCols; k++) {//3 linhas para baixo
                         if (!tiles[j][k].isMine()) //se nao for uma mina
                             tiles[j][k].updateSurroundingMineCount();
                     }
@@ -272,19 +273,19 @@ public class Game extends Activity {
             //cria uma nova table row
             TableRow tableRow = new TableRow(this);
             //seta a largura e altura da tablerow
-            tableRow.setLayoutParams(new LayoutParams((tileWH * tilePadding) * totalCols, tileWH * tilePadding));
+            tableRow.setLayoutParams(new LayoutParams((tileWH + 2 * tilePadding) * totalCols, tileWH + 2 * tilePadding));
 
             //para cada coluna
             for (int col = 0; col < totalCols; col++) {
                 //seta a altura e largura do tile
-                tiles[row][col].setLayoutParams(new LayoutParams(tileWH * tilePadding, tileWH * tilePadding));
+                tiles[row][col].setLayoutParams(new LayoutParams(tileWH + 2 * tilePadding, tileWH + 2 * tilePadding));
                 //adiciona o espacamento do tile
                 tiles[row][col].setPadding(tilePadding, tilePadding, tilePadding, tilePadding);
                 //adiciona o tile ao table row
                 tableRow.addView(tiles[row][col]);
             }
             //adiciona a linha para o layoute do campo minado
-            mineField.addView(tableRow, new TableLayout.LayoutParams((tileWH * tilePadding) * totalCols, tileWH * tilePadding));
+            mineField.addView(tableRow, new TableLayout.LayoutParams((tileWH + 2 * tilePadding) * totalCols, tileWH + 2 * tilePadding));
         }
     }
 
@@ -350,6 +351,7 @@ public class Game extends Activity {
             return false;
     }
 
+    // RIPPLE EFFECT
     private void uncoverTiles(int row, int col) {
         //se o tile for uma mina ou uma bandeira retorne
         if (tiles[row][col].isMine() || tiles[row][col].isFlag())
