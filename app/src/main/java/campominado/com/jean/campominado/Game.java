@@ -2,6 +2,7 @@ package campominado.com.jean.campominado;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -95,8 +96,10 @@ public class Game extends Activity {
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                restartGame();
-
+//                restartGame();
+                Intent intent = new Intent(Game.this, Score.class);
+                intent.putExtra(Score.KEY_SCORE, "" + secondsPassed);
+                startActivity(intent);
             }
         });
 
@@ -151,6 +154,9 @@ public class Game extends Activity {
                 tiles[row][col].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        MediaPlayer media = MediaPlayer.create(getApplicationContext(), R.raw.pistola);
+                        media.start();
+
                         if (!timerStarted) {
                             startTimer();
                             timerStarted = true;
@@ -176,6 +182,8 @@ public class Game extends Activity {
                 tiles[row][col].setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View view) {
+                        MediaPlayer media = MediaPlayer.create(getApplicationContext(), R.raw.pistola);
+                        media.start();
                         if (!timerStarted) {
                             startTimer();
                             timerStarted = true;
@@ -333,6 +341,9 @@ public class Game extends Activity {
     private void loseGame() {
         imageButton.setBackgroundResource(R.drawable.sad);
 
+        MediaPlayer media = MediaPlayer.create(getApplicationContext(), R.raw.bomba);
+        media.start();
+
         endGame();
     }
 
@@ -342,7 +353,7 @@ public class Game extends Activity {
         endGame();
 
         Intent intent = new Intent(Game.this, Score.class);
-        intent.putExtra(Score.KEY_SCORE , "" + secondsPassed);
+        intent.putExtra(Score.KEY_SCORE, "" + secondsPassed);
         startActivity(intent);
 
     }
