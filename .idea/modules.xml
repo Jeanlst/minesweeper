@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/CampoMinado.iml" filepath="$PROJECT_DIR$/CampoMinado.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/minesweeper.iml" filepath="$PROJECT_DIR$/minesweeper.iml" />
+      <module fileurl="file://$PROJECT_DIR$/minesweeper.iml" filepath="$PROJECT_DIR$/minesweeper.iml" />
     </modules>
   </component>
 </project>

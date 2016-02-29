@@ -154,7 +154,7 @@ public class Game extends Activity {
                 tiles[row][col].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        MediaPlayer media = MediaPlayer.create(getApplicationContext(), R.raw.pistola);
+                        MediaPlayer media = MediaPlayer.create(getApplicationContext(), R.raw.click);
                         media.start();
 
                         if (!timerStarted) {
@@ -182,7 +182,7 @@ public class Game extends Activity {
                 tiles[row][col].setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View view) {
-                        MediaPlayer media = MediaPlayer.create(getApplicationContext(), R.raw.pistola);
+                        MediaPlayer media = MediaPlayer.create(getApplicationContext(), R.raw.click);
                         media.start();
                         if (!timerStarted) {
                             startTimer();
@@ -341,7 +341,7 @@ public class Game extends Activity {
     private void loseGame() {
         imageButton.setBackgroundResource(R.drawable.sad);
 
-        MediaPlayer media = MediaPlayer.create(getApplicationContext(), R.raw.bomba);
+        MediaPlayer media = MediaPlayer.create(getApplicationContext(), R.raw.bomb);
         media.start();
 
         endGame();
